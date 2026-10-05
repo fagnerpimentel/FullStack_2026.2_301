@@ -40,3 +40,19 @@ div div{
     grid-row-start: 2;
     grid-row-end: 5;
 }
+
+#sessao2{
+    background-color: blueviolet;
+    display: grid;
+    gap: 10px;
+    grid-template-areas: 
+        'topo topo topo'
+        'menu principal direito'
+        'menu rodape rodape';
+}
+
+#s1{grid-area: topo;}
+#s2{grid-area: menu;}
+#s3{grid-area: principal;}
+#s4{grid-area: direito;}
+#s5{grid-area: rodape;}
