@@ -11,6 +11,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true });
 
 let dbo = client.db("exemplo_bd");
 let usuarios = dbo.collection("usuarios");
+let posts = dbo.collection("posts")
 
 let app = express();
 app.use(express.static("./public")); 
@@ -63,3 +64,45 @@ app.post("/cadastrar", function(req, res){
       };
     });
   });
+
+
+  
+app.get("/for", function(req,res){
+    let qtde = req.query.qtde;
+    res.render("for.ejs", {qtde});
+});
+
+
+app.get("/blog", function(req,res){
+    let itens = [];
+    res.render("blog.ejs", {itens})
+})
+
+app.get("/criar", function(req,res){
+    res.redirect("criar_post.html")
+})
+
+app.get("/cadastrar_post",function(req,res){
+    let titulo = req.query.titulo;
+    let resumo = req.query.resumo;
+    let conteudo = req.query.conteudo;
+
+    let data = {
+        db_titulo: titulo,
+        db_resumo: resumo,
+        db_conteudo: conteudo
+    }
+
+    posts.insertOne(data, function (err) {
+      if (err) {
+        console.log(err);
+        res.render('resposta_usuario.ejs', {resposta: "Erro ao cadastrar post!"})
+      }else {
+
+        let data = {}
+        posts.find(data).toArray(function(err, itens){
+            res.render('blog.ejs', {itens})        
+        })
+      };
+    });
+})
